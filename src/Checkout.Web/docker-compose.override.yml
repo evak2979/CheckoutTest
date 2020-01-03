@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  checkout:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "8800:80"
+      - "8801:443"
