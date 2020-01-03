@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>3cd816ec-4832-44e7-98e7-7501d3317720</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://{ServiceIPAddress}{ServicePort}/weatherforecast</DockerServiceUrl>
+    <DockerServiceUrl>{Scheme}://{ServiceIPAddress}{ServicePort}/paymentgateway</DockerServiceUrl>
     <DockerServiceName>checkout</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
