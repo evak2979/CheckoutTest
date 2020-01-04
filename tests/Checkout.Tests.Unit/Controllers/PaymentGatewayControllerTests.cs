@@ -1,8 +1,10 @@
-﻿using AutoFixture;
+﻿using System.Threading.Tasks;
+using AutoFixture;
 using Checkout.Services;
 using Checkout.Services.Banks;
 using Checkout.Web.Controllers;
 using Checkout.Web.Models;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -12,18 +14,20 @@ namespace Checkout.Tests.Unit.Controllers
     {
         private PaymentGatewayController _sut;
         private Mock<IPaymentOrchestrator> _mockOrchestator;
+        private Mock<ILogger<PaymentGatewayController>> _mockLogger;
         private Fixture _fixture;
 
         public PaymentGatewayControllerTests()
         {
             _fixture = new Fixture();
             _mockOrchestator = new Mock<IPaymentOrchestrator>();
+            _mockLogger = new Mock<ILogger<PaymentGatewayController>>();
 
-            _sut = new PaymentGatewayController(_mockOrchestator.Object);
+            _sut = new PaymentGatewayController(_mockOrchestator.Object, _mockLogger.Object);
         }
 
         [Fact]
-        public void GivenAPaymentRequest_WhenProcessingIt_ShouldPassItToThePaymentOrchestrator()
+        public async Task GivenAPaymentRequest_WhenProcessingIt_ShouldPassItToThePaymentOrchestrator()
         {
             // given
             var submitPaymentRequest = _fixture.Create<SubmitPaymentRequest>();
@@ -32,7 +36,7 @@ namespace Checkout.Tests.Unit.Controllers
                 .Returns(bankPaymentResponse);
 
             // when
-            _sut.Post(submitPaymentRequest);
+            await _sut.Post(submitPaymentRequest);
 
             // then
             _mockOrchestator.Verify(x => x.ProcessPayment(It.Is<BankPaymentRequest>(y =>

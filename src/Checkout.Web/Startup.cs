@@ -1,5 +1,9 @@
 using System.IO;
 using System.Reflection;
+using Checkout.Repository;
+using Checkout.Repository.LiteDb;
+using Checkout.Services;
+using Checkout.Services.Banks;
 using Checkout.Web.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +28,8 @@ namespace Checkout.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            RegisterDependencies(services);
+
             services.AddControllers();
 
             services.AddMvc();
@@ -50,6 +56,15 @@ namespace Checkout.Web
                     // Ignore if no XML file - means no comments for the fields.
                 }
             });
+        }
+
+        private void RegisterDependencies(IServiceCollection services)
+        {
+            services.AddTransient<ISensitiveDataObfuscator, SensitiveDataObfuscator>();
+            services.AddTransient<IPaymentRepository, PaymentRepository>();
+            services.AddTransient<IBankFactory, BankFactory>();
+            services.AddTransient<IPaymentOrchestrator, PaymentOrchestrator>();
+            services.AddTransient<ILiteDatabaseWrapper, LiteDatabaseWrapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

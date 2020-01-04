@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 using Checkout.Services;
 using Checkout.Services.Banks;
 using Checkout.Web.Models;
@@ -14,16 +15,11 @@ namespace Checkout.Web.Controllers
     public class PaymentGatewayController : ControllerBase
     {
         private readonly IPaymentOrchestrator _paymentOrchestrator;
-
-        public PaymentGatewayController(IPaymentOrchestrator paymentOrchestrator)
-        {
-            _paymentOrchestrator = paymentOrchestrator;
-        }
-
         private readonly ILogger<PaymentGatewayController> _logger;
 
-        public PaymentGatewayController(ILogger<PaymentGatewayController> logger)
+        public PaymentGatewayController(IPaymentOrchestrator paymentOrchestrator, ILogger<PaymentGatewayController> logger)
         {
+            _paymentOrchestrator = paymentOrchestrator;
             _logger = logger;
         }
 
@@ -31,7 +27,7 @@ namespace Checkout.Web.Controllers
         [ProducesResponseType(typeof(SubmitPaymentResponse), (int)HttpStatusCode.OK)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(SubmitPaymentResponseExample))]
         [SwaggerRequestExample(typeof(SubmitPaymentRequest), typeof(SubmitPaymentRequestExample))]
-        public IActionResult Post(SubmitPaymentRequest paymentRequest)
+        public async Task<IActionResult> Post(SubmitPaymentRequest paymentRequest)
         {
             var bankPaymentRequest = GenerateBankPaymentRequest(paymentRequest);
             var bankPaymentResponse = _paymentOrchestrator.ProcessPayment(bankPaymentRequest);
@@ -47,7 +43,7 @@ namespace Checkout.Web.Controllers
         [ProducesResponseType(typeof(RetrievePaymentResponse), (int)HttpStatusCode.OK)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(RetrievePaymentResponseExample))]
         [SwaggerRequestExample(typeof(RetrievePaymentRequest), typeof(RetrievePaymentRequestExample))]
-        public IActionResult Get(RetrievePaymentRequest paymentRequest)
+        public async Task<IActionResult> Get(RetrievePaymentRequest paymentRequest)
         {
             return null;
         }
