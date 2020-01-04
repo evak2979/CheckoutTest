@@ -9,6 +9,7 @@ namespace Checkout.Repository.Models
         public CardDetails CardDetails { get; set; }
 
         public MerchantDetails MerchantDetails { get; set; }
+
         public decimal Amount { get; set; }
     }
 }

@@ -20,6 +20,6 @@ namespace Checkout.Web.Models
         /// <summary>
         /// Whether the payment has been made successfully
         /// </summary>
-        public PaymentResponseStatus PaymentResponseStatus { get; set; }
+        public string PaymentResponseStatus { get; set; }
     }
 }

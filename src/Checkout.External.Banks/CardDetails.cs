@@ -1,4 +1,4 @@
-﻿namespace Checkout.External.Banks
+﻿namespace Checkout.Services
 {
     public class CardDetails
     {

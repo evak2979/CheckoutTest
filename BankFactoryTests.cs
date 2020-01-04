@@ -1,9 +1,8 @@
-using System;
 using Xunit;
 
 namespace Checkout.Tests.Unit
 {
-    public class PaymentRepositoryTests
+    public class BankFactoryTests
     {
         [Fact]
         public void Test1()

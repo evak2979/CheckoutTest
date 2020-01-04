@@ -2,7 +2,7 @@
 
 namespace Checkout.Repository.Models
 {
-    public class PaymentRequest
+    public class RetrievePaymentRequest
     {
         public Guid PaymentId { get; private set; }
 

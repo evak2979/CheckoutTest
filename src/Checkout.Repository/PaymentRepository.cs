@@ -8,7 +8,7 @@ namespace Checkout.Repository
     {
         Guid CreatePayment(Payment payment);
 
-        PaymentReadModel RetrievePayment(PaymentRequest paymentRequest);
+        PaymentReadModel RetrievePayment(RetrievePaymentRequest paymentRequest);
     }
 
     public class PaymentRepository : IPaymentRepository
@@ -27,7 +27,7 @@ namespace Checkout.Repository
             return payment.Id;
         }
 
-        public PaymentReadModel RetrievePayment(PaymentRequest paymentRequest)
+        public PaymentReadModel RetrievePayment(RetrievePaymentRequest paymentRequest)
         {
             var payment = _databaseWrapper.Get(paymentRequest);
 
@@ -37,7 +37,7 @@ namespace Checkout.Repository
 
     public class PaymentReadModel
     {
-        public long CardNumber { get; private set; }
+        public string CardNumber { get; private set; }
 
         public string ExpiryDate { get; private set; }
 
@@ -45,7 +45,7 @@ namespace Checkout.Repository
 
         public string Currency { get; private set; }
 
-        public int CVV { get; private set; }
+        public string CVV { get; private set; }
 
         public Guid PaymentId { get; private set; }
 

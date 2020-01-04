@@ -6,6 +6,6 @@ namespace Checkout.Repository.LiteDb
     {
         void Insert(Payment payment);
 
-        Payment Get(PaymentRequest paymentRequest);
+        Payment Get(RetrievePaymentRequest paymentRequest);
     }
 }

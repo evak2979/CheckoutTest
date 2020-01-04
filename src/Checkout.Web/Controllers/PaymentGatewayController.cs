@@ -1,6 +1,6 @@
 ﻿using System.Net;
-using Checkout.Repository;
-using Checkout.Web.Infrastructure;
+using Checkout.Services;
+using Checkout.Services.Banks;
 using Checkout.Web.Models;
 using Checkout.Web.Swagger;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +13,11 @@ namespace Checkout.Web.Controllers
     [Route("[controller]")]
     public class PaymentGatewayController : ControllerBase
     {
-        private readonly IPaymentRepository _paymentRepository;
+        private readonly IPaymentOrchestrator _paymentOrchestrator;
 
-        public PaymentGatewayController(IPaymentRepository paymentRepository)
+        public PaymentGatewayController(IPaymentOrchestrator paymentOrchestrator)
         {
-            _paymentRepository = paymentRepository;
+            _paymentOrchestrator = paymentOrchestrator;
         }
 
         private readonly ILogger<PaymentGatewayController> _logger;
@@ -33,7 +33,14 @@ namespace Checkout.Web.Controllers
         [SwaggerRequestExample(typeof(SubmitPaymentRequest), typeof(SubmitPaymentRequestExample))]
         public IActionResult Post(SubmitPaymentRequest paymentRequest)
         {
-            return null;
+            var bankPaymentRequest = GenerateBankPaymentRequest(paymentRequest);
+            var bankPaymentResponse = _paymentOrchestrator.ProcessPayment(bankPaymentRequest);
+
+            return Ok(new SubmitPaymentResponse
+            {
+                PaymentId = bankPaymentResponse.PaymentId,
+                PaymentResponseStatus = bankPaymentResponse.BankPaymentResponseStatus.ToString()
+            });
         }
 
         [HttpGet]
@@ -43,6 +50,25 @@ namespace Checkout.Web.Controllers
         public IActionResult Get(RetrievePaymentRequest paymentRequest)
         {
             return null;
+        }
+
+        private BankPaymentRequest GenerateBankPaymentRequest(SubmitPaymentRequest submitPaymentRequest)
+        {
+            return new BankPaymentRequest
+            {
+                CardDetails = new Services.CardDetails
+                {
+                    CardNumber = submitPaymentRequest.CardDetails.CardNumber,
+                    CVV = submitPaymentRequest.CardDetails.CVV,
+                    ExpiryDate = submitPaymentRequest.CardDetails.ExpiryDate,
+                    Currency = submitPaymentRequest.CardDetails.Currency
+                },
+                MerchantDetails = new Services.MerchantDetails
+                {
+                    MerchantId = submitPaymentRequest.MerchantDetails.Id
+                },
+                Amount = submitPaymentRequest.Amount
+            };
         }
     }
 }

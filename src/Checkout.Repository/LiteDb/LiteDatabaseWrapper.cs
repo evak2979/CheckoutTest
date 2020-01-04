@@ -17,7 +17,7 @@ namespace Checkout.Repository.LiteDb
             }
         }
 
-        public Payment Get(PaymentRequest paymentRequest)
+        public Payment Get(RetrievePaymentRequest paymentRequest)
         {
             using (var db = new LiteDatabase(@"MyData.db"))
             {

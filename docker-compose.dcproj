@@ -9,6 +9,7 @@
     <DockerServiceName>checkout</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="BankFactoryTests.cs" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

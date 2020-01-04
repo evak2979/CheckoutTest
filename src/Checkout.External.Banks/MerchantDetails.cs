@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Checkout.External.Banks
+namespace Checkout.Services
 {
-    public class MerchantDetails
+    public sealed class MerchantDetails
     {
-        public Guid Id { get; set; }
+        public Guid MerchantId { get; set; }
     }
 }
