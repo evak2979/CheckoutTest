@@ -15,20 +15,19 @@ namespace Checkout.Tests.Acceptance.Helpers
             {
                 using (var ps = PowerShell.Create())
                 {
-                    var results1 = ps
+                    var asyncResult = ps
                         .AddScript(
                             @"dotnet publish ../../../../../src/Checkout.Web/Checkout.Web.csproj -o ..\..\..\..\..\obj\Docker\publish")
                         .AddScript("docker-compose -f ../../../../../docker-compose-acceptance.yml build")
                         .AddScript("docker-compose -f ../../../../../docker-compose-acceptance.yml up -d")
-                        .Invoke();
+                        .BeginInvoke();
 
-                    // Give the containers enough time to initialize
-                    Thread.Sleep(20000);
-
-                    foreach (var result in results1)
+                    while (!asyncResult.IsCompleted)
                     {
-                        Debug.Write(result.ToString());
+                        Thread.Sleep(1000);
                     }
+
+                    Thread.Sleep(1000);
                 }
             }
         }
@@ -39,15 +38,17 @@ namespace Checkout.Tests.Acceptance.Helpers
             {
                 using (var ps = PowerShell.Create())
                 {
-                    var results1 = ps
+                    var asyncResult = ps
                         .AddScript(
                             "docker rm $(docker stop $(docker ps -a -q --filter ancestor=checkout --format=\"{{.ID}}\"))")
-                        .Invoke();
+                        .BeginInvoke();
 
-                    foreach (var result in results1)
+                    while (!asyncResult.IsCompleted)
                     {
-                        Debug.Write(result.ToString());
+                        Thread.Sleep(1000);
                     }
+
+                    Thread.Sleep(1000);
                 }
             }
         }
