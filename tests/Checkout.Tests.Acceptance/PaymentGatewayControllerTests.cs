@@ -2,7 +2,8 @@ using Xunit;
 
 namespace Checkout.Tests.Acceptance
 {
-    public class UnitTest1
+    [Collection("Container collection")]
+    public class PaymentGatewayControllerTests
     {
         [Fact]
         public void Test1()

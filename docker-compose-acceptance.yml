@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  checkout:
+    image: ${DOCKER_REGISTRY-}checkout
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80      
+    ports:
+      - "9900:80"
+      - "9901:443"

@@ -13,12 +13,12 @@ using Xunit;
 
 namespace Checkout.Tests.Integration
 {
-    public class PaymentGatewayController
+    public class PaymentGatewayControllerTests
     {
         private Web.Controllers.PaymentGatewayController _sut;
         private ServicesHelper _servicesHelper;
 
-        public PaymentGatewayController()
+        public PaymentGatewayControllerTests()
         {
             _servicesHelper = new ServicesHelper();
             var serviceProvider = _servicesHelper.ServiceCollection.BuildServiceProvider();

@@ -4,7 +4,7 @@ using Checkout.Services.Banks.DummyBank;
 using Shouldly;
 using Xunit;
 
-namespace Checkout.Tests.Unit.Services
+namespace Checkout.Tests.Unit.Banks
 {
     public class BankFactoryTests
     {
