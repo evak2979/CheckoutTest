@@ -18,7 +18,7 @@ namespace Checkout.Tests.Unit.Services
         public void GivenAPayment_WhenObfuscating_ShouldHideTheMiddleEightDigitsOfTheCardLongNumber()
         {
             // given
-            var payment = new Payment
+            var payment = new PaymentInformation
             {
                 CardDetails = new Repository.Models.CardDetails
                 {
@@ -38,7 +38,7 @@ namespace Checkout.Tests.Unit.Services
         public void GivenAPayment_WhenObfuscating_ShouldHideTheCardsCVV()
         {
             // given
-            var payment = new Payment
+            var payment = new PaymentInformation
             {
                 CardDetails = new Repository.Models.CardDetails
                 {

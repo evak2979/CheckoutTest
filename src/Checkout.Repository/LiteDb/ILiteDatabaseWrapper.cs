@@ -4,8 +4,8 @@ namespace Checkout.Repository.LiteDb
 {
     public interface ILiteDatabaseWrapper
     {
-        void Insert(Payment payment);
+        void Insert(PaymentInformation payment);
 
-        Payment Get(RetrievePaymentRequest paymentRequest);
+        PaymentInformation Get(RetrievePaymentRequest paymentRequest);
     }
 }

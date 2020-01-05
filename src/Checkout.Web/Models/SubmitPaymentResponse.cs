@@ -1,5 +1,4 @@
 ﻿using System;
-using Checkout.Web.Models.Base;
 
 namespace Checkout.Web.Models
 {

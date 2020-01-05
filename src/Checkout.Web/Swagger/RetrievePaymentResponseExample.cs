@@ -9,14 +9,12 @@ namespace Checkout.Web.Swagger
         {
             return new RetrievePaymentResponse
             {
-                CardDetails = new CardDetails
-                {
-                    ExpiryDate = "01/1010",
-                    Currency = "Pound",
-                    CVV = 123,
-                    CardNumber = 1234567890123456
-                },
-                PaymentResponseStatus = PaymentResponseStatus.Successful
+                ExpiryDate = "01/1010",
+                Currency = "Pound",
+                CVV = "123",
+                CardNumber = "1234567890123456",
+                PaymentResponseStatus = "Successful",
+                Amount = 12345
             };
         }
     }

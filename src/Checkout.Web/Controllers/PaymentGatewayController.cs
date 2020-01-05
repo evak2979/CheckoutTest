@@ -7,8 +7,6 @@ using Checkout.Web.Swagger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Filters;
-using CardDetails = Checkout.Services.Models.CardDetails;
-using MerchantDetails = Checkout.Services.Models.MerchantDetails;
 
 namespace Checkout.Web.Controllers
 {
@@ -29,11 +27,11 @@ namespace Checkout.Web.Controllers
         [ProducesResponseType(typeof(SubmitPaymentResponse), (int)HttpStatusCode.OK)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(SubmitPaymentResponseExample))]
         [SwaggerRequestExample(typeof(SubmitPaymentRequest), typeof(SubmitPaymentRequestExample))]
-        public async Task<IActionResult> Post([FromBody]SubmitPaymentRequest paymentRequest, [FromQuery] string correlationId)
+        public async Task<IActionResult> Post([FromBody]SubmitPaymentRequest submitPaymentRequest, [FromQuery] string correlationId = null)
         {
-            paymentRequest.CorrelationId = correlationId;
+            submitPaymentRequest.CorrelationId = correlationId;
 
-            var bankPaymentRequest = GenerateBankPaymentRequest(paymentRequest);
+            var bankPaymentRequest = GenerateBankPaymentRequest(submitPaymentRequest);
             var bankPaymentResponse = _paymentOrchestrator.ProcessPayment(bankPaymentRequest);
 
             return Ok(new SubmitPaymentResponse
@@ -47,23 +45,42 @@ namespace Checkout.Web.Controllers
         [ProducesResponseType(typeof(RetrievePaymentResponse), (int)HttpStatusCode.OK)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(RetrievePaymentResponseExample))]
         [SwaggerRequestExample(typeof(RetrievePaymentRequest), typeof(RetrievePaymentRequestExample))]
-        public async Task<IActionResult> Get([FromQuery]RetrievePaymentRequest paymentRequest)
+        public async Task<IActionResult> Get([FromQuery]RetrievePaymentRequest retrievePaymentRequest, [FromQuery] string correlationId = null)
         {
-            return Ok();
+            retrievePaymentRequest.CorrelationId = correlationId;
+            
+            var orchestratorPaymentRequest = new Services.Models.RetrievePaymentRequest
+            {
+                PaymentId = retrievePaymentRequest.PaymentId,
+                MerchantId = retrievePaymentRequest.MerchantId,
+                CorrelationId = correlationId
+            };
+
+            var payment = _paymentOrchestrator.RetrievePayment(orchestratorPaymentRequest);
+
+            return Ok(new RetrievePaymentResponse
+            {
+                CVV = payment.CVV,
+                Currency = payment.Currency,
+                ExpiryDate = payment.ExpiryDate,
+                PaymentResponseStatus = payment.PaymentStatus,
+                CardNumber = payment.CardNumber,
+                Amount = payment.Amount
+            });
         }
 
         private BankPaymentRequest GenerateBankPaymentRequest(SubmitPaymentRequest submitPaymentRequest)
         {
             return new BankPaymentRequest
             {
-                CardDetails = new CardDetails
+                CardDetails = new Services.Models.CardDetails
                 {
                     CardNumber = submitPaymentRequest.CardDetails.CardNumber,
                     CVV = submitPaymentRequest.CardDetails.CVV,
                     ExpiryDate = submitPaymentRequest.CardDetails.ExpiryDate,
                     Currency = submitPaymentRequest.CardDetails.Currency
                 },
-                MerchantDetails = new MerchantDetails
+                MerchantDetails = new Services.Models.MerchantDetails
                 {
                     MerchantId = submitPaymentRequest.MerchantDetails.Id
                 },

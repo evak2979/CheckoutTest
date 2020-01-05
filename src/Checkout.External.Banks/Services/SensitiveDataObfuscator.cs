@@ -5,18 +5,18 @@ namespace Checkout.Services.Services
 {
     public class SensitiveDataObfuscator : ISensitiveDataObfuscator
     {
-        public void Obfuscate(Payment payment)
+        public void Obfuscate(PaymentInformation payment)
         {
             ObfuscateLongNumber(payment);
             ObfuscateCvv(payment);
         }
 
-        private void ObfuscateCvv(Payment payment)
+        private void ObfuscateCvv(PaymentInformation payment)
         {
             payment.CardDetails.CVV = "***";
         }
 
-        private void ObfuscateLongNumber(Payment payment)
+        private void ObfuscateLongNumber(PaymentInformation payment)
         {
             var obfuscatedNumber = new StringBuilder();
 

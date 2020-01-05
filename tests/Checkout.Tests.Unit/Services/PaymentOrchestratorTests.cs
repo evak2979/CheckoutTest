@@ -35,7 +35,7 @@ namespace Checkout.Tests.Unit.Services
         }
 
         [Fact]
-        public void GivenAPaymentRequest_WhenProcessingAPayment_ShouldRetrieveTheVendorsBankDetails()
+        public void GivenAProcessPaymentRequest_WhenProcessingAProcessPayment_ShouldRetrieveTheVendorsBankDetails()
         {
             // given
             var paymentRequest = _fixture.Create<BankPaymentRequest>();
@@ -54,7 +54,7 @@ namespace Checkout.Tests.Unit.Services
         }
 
         [Fact]
-        public void GivenAPaymentRequest_WhenProcessingAPayment_ShouldAskTheVendorBankToProcessThePayment()
+        public void GivenAProcessPaymentRequest_WhenProcessingAProcessPayment_ShouldAskTheVendorBankToProcessThePayment()
         {
             // given
             var paymentRequest = _fixture.Create<BankPaymentRequest>();
@@ -73,7 +73,7 @@ namespace Checkout.Tests.Unit.Services
         }
 
         [Fact]
-        public void GivenAPaymentRequest_WhenProcessingAPayment_ShouldPersistThePaymentInformationToOurDatastore()
+        public void GivenAProcessPaymentRequest_WhenProcessingAProcessPayment_ShouldPersistThePaymentInformationToOurDatastore()
         {
             // given
             var paymentRequest = _fixture.Create<BankPaymentRequest>();
@@ -88,13 +88,32 @@ namespace Checkout.Tests.Unit.Services
             _sut.ProcessPayment(paymentRequest);
 
             // then
-            _mockPaymentRepository.Verify(x => x.CreatePayment(It.Is<Payment>(y => 
+            _mockPaymentRepository.Verify(x => x.CreatePayment(It.Is<PaymentInformation>(y => 
                 y.Id == paymentResponse.PaymentId && 
                 y.Amount == paymentRequest.Amount && 
                 y.CardDetails.CVV == paymentRequest.CardDetails.CVV.ToString() && 
                 y.CardDetails.CardNumber == paymentRequest.CardDetails.CardNumber.ToString() && 
                 y.CardDetails.ExpiryDate == paymentRequest.CardDetails.ExpiryDate && 
                 y.CardDetails.Currency == paymentRequest.CardDetails.Currency)));
+        }
+
+        [Fact]
+        public void GivenARetrievePaymentRequest_WhenRetrievingPayment_ShouldCallRepository()
+        {
+            // given
+            var payment =
+                Repository.Models.PaymentReadModel.BuildPaymentReadModel(_fixture.Create<PaymentInformation>());
+
+            var paymentRequest = _fixture.Create<Checkout.Services.Models.RetrievePaymentRequest>();
+            _mockPaymentRepository.Setup(x => x.RetrievePayment(It.IsAny<RetrievePaymentRequest>()))
+                .Returns(payment);
+
+            // when
+            _sut.RetrievePayment(paymentRequest);
+
+            // then
+            _mockPaymentRepository.Verify(x => x.RetrievePayment(It.Is<RetrievePaymentRequest>(y => y.PaymentId == paymentRequest.PaymentId &&
+                                                                                            y.MerchantId == paymentRequest.MerchantId)));
         }
     }
 }

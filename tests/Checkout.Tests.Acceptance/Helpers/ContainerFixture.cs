@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Management.Automation;
+using System.Threading;
 using Xunit;
 
 namespace Checkout.Tests.Acceptance.Helpers
@@ -20,6 +21,9 @@ namespace Checkout.Tests.Acceptance.Helpers
                         .AddScript("docker-compose -f ../../../../../docker-compose-acceptance.yml build")
                         .AddScript("docker-compose -f ../../../../../docker-compose-acceptance.yml up -d")
                         .Invoke();
+
+                    // Give the containers enough time to initialize
+                    Thread.Sleep(20000);
 
                     foreach (var result in results1)
                     {

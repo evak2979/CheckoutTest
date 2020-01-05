@@ -2,6 +2,7 @@
 using Checkout.Repository.Models;
 using Checkout.Services.Banks;
 
+
 namespace Checkout.Services.Services
 {
     public sealed class PaymentOrchestrator : IPaymentOrchestrator
@@ -27,9 +28,22 @@ namespace Checkout.Services.Services
             return bankPaymentResponse;
         }
 
-        private Payment GenerateRepositoryPayment(BankPaymentRequest bankPaymentRequest, BankPaymentResponse bankPaymentResponse)
+        public Models.PaymentReadModel RetrievePayment(Models.RetrievePaymentRequest paymentRequest)
         {
-            var payment = new Payment
+            var repoPaymentRequest = new Repository.Models.RetrievePaymentRequest
+            {
+                PaymentId = paymentRequest.PaymentId,
+                MerchantId = paymentRequest.MerchantId
+            };
+
+            var paymentRequestResponse = _paymentRepository.RetrievePayment(repoPaymentRequest);
+
+            return Models.PaymentReadModel.BuildPaymentReadModel(paymentRequestResponse);
+        }
+
+        private PaymentInformation GenerateRepositoryPayment(BankPaymentRequest bankPaymentRequest, BankPaymentResponse bankPaymentResponse)
+        {
+            var payment = new PaymentInformation
             {
                 Amount = bankPaymentRequest.Amount,
                 Id = bankPaymentResponse.PaymentId,
@@ -43,7 +57,8 @@ namespace Checkout.Services.Services
                 MerchantDetails = new Repository.Models.MerchantDetails
                 {
                     Id = bankPaymentRequest.MerchantDetails.MerchantId
-                }
+                },
+                PaymentStatus = bankPaymentResponse.BankPaymentResponseStatus == BankPaymentResponseStatus.Unsuccessful ? "Unsuccessful" : "Successful"
             };
 
             _dataObfuscator.Obfuscate(payment);

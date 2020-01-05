@@ -4,6 +4,6 @@ namespace Checkout.Services.Services
 {
     public interface ISensitiveDataObfuscator
     {
-        void Obfuscate(Payment bankPaymentResponse);
+        void Obfuscate(PaymentInformation bankPaymentResponse);
     }
 }

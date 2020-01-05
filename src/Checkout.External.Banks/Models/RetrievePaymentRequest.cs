@@ -1,7 +1,7 @@
 ﻿using System;
 using Checkout.Repository.Models.Base;
 
-namespace Checkout.Repository.Models
+namespace Checkout.Services.Models
 {
     public class RetrievePaymentRequest : BaseRequest
     {
