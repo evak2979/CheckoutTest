@@ -1,4 +1,4 @@
-﻿namespace Checkout.Services
+﻿namespace Checkout.Services.Models
 {
     public class CardDetails
     {

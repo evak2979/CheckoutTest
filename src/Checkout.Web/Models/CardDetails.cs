@@ -5,7 +5,7 @@ namespace Checkout.Web.Models
     /// <summary>
     /// Information regarding a credit card
     /// </summary>
-    public class CardDetails
+    public sealed class CardDetails
     {
         /// <summary>
         /// The credit card long number (must be 16 digits long)
@@ -31,7 +31,6 @@ namespace Checkout.Web.Models
         /// The CVV code of the credit card (must be 3 digits long)
         /// </summary>
         [Required]
-        [Range(3,3)]
         public int CVV { get; set; }
     }
 }

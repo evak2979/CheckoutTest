@@ -1,4 +1,6 @@
-﻿namespace Checkout.Services.Banks
+﻿using Checkout.Services.Models;
+
+namespace Checkout.Services.Banks
 {
     public class BankPaymentRequest
     {

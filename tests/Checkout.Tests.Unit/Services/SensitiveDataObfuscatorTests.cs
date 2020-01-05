@@ -1,5 +1,5 @@
 ﻿using Checkout.Repository.Models;
-using Checkout.Services;
+using Checkout.Services.Services;
 using Shouldly;
 using Xunit;
 

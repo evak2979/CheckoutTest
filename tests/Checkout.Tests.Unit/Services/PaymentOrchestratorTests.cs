@@ -2,8 +2,8 @@
 using AutoFixture;
 using Checkout.Repository;
 using Checkout.Repository.Models;
-using Checkout.Services;
 using Checkout.Services.Banks;
+using Checkout.Services.Services;
 using Moq;
 using Xunit;
 
@@ -39,6 +39,12 @@ namespace Checkout.Tests.Unit.Services
         {
             // given
             var paymentRequest = _fixture.Create<BankPaymentRequest>();
+            var paymentResponse = new BankPaymentResponse
+            {
+                PaymentId = Guid.NewGuid()
+            };
+            _mockBank.Setup(x => x.ProcessPayment(It.IsAny<BankPaymentRequest>()))
+                .Returns(paymentResponse);
 
             // when
             _sut.ProcessPayment(paymentRequest);

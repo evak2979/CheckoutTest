@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -21,16 +22,26 @@ namespace Checkout.Web.Infrastructure.Middlewares
             _logger = logger;
         }
 
-        public Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             var correlationId = _correlationIdProvider.GetCorrelationId();
 
             using (_logger.BeginScope(("correlation_id", correlationId)))
             {
                 context.TraceIdentifier = correlationId;
+                context.Request.QueryString = context.Request.QueryString.Add("correlationId", correlationId);
 
-                return _next(context);
+                await _next(context);
             }
+        }
+    }
+
+    public static class CorrelationIdMiddlewareExtensions
+    {
+        public static IApplicationBuilder UseCorrelationIdMiddleware(
+            this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<CorrelationIdMiddleware>();
         }
     }
 }

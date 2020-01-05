@@ -1,10 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Checkout.Services;
+using Checkout.Services.Services;
 using Checkout.Tests.Integration.Helpers;
-using Checkout.Web.Controllers;
 using Checkout.Web.Models;
-using LiteDB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -48,7 +46,7 @@ namespace Checkout.Tests.Integration
             };
 
             // when
-            var result = await _sut.Post(submitPaymentRequest);
+            var result = await _sut.Post(submitPaymentRequest, Guid.NewGuid().ToString());
 
             // then
             result.ShouldBeOfType<OkObjectResult>();

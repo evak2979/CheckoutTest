@@ -11,7 +11,7 @@ namespace Checkout.Web.Swagger
             return new SubmitPaymentResponse
             {
                 PaymentId = Guid.NewGuid(),
-                MerchantId =  Guid.NewGuid()
+                PaymentResponseStatus = "Successful"
             };
         }
     }

@@ -2,8 +2,8 @@ using System.IO;
 using System.Reflection;
 using Checkout.Repository;
 using Checkout.Repository.LiteDb;
-using Checkout.Services;
 using Checkout.Services.Banks;
+using Checkout.Services.Services;
 using Checkout.Web.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Checkout.Web.Infrastructure.Middlewares;
+using Microsoft.AspNetCore.Http;
 
 
 namespace Checkout.Web
@@ -65,6 +67,8 @@ namespace Checkout.Web
             services.AddTransient<IBankFactory, BankFactory>();
             services.AddTransient<IPaymentOrchestrator, PaymentOrchestrator>();
             services.AddTransient<ILiteDatabaseWrapper, LiteDatabaseWrapper>();
+            services.AddTransient<ICorrelationIdProvider, CorrelationIdProvider>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +78,16 @@ namespace Checkout.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Custom middleware to handle all errors on middleware level
+            app.UseErrorHandlingMiddleware();
+            
+            // Custom middleware to register existing correlation to context trace identifier
+            app.UseCorrelationIdMiddleware();
+
+            // Custom middleware to track start and end of a request
+            app.UseRequestTimeTrackingMiddleware();
+
 
             app.UseSwagger();
 

@@ -1,6 +1,6 @@
 ﻿using Checkout.Services.Banks;
 
-namespace Checkout.Services
+namespace Checkout.Services.Services
 {
     public interface IPaymentOrchestrator
     {

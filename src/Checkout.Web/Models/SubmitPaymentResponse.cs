@@ -1,4 +1,5 @@
 ﻿using System;
+using Checkout.Web.Models.Base;
 
 namespace Checkout.Web.Models
 {
@@ -11,11 +12,6 @@ namespace Checkout.Web.Models
         /// The payment's unique identifier
         /// </summary>
         public Guid PaymentId { get; set; }
-
-        /// <summary>
-        /// The merchant's unique identifier
-        /// </summary>
-        public Guid MerchantId { get; set; }
 
         /// <summary>
         /// Whether the payment has been made successfully

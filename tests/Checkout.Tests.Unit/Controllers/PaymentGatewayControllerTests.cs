@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoFixture;
-using Checkout.Services;
 using Checkout.Services.Banks;
+using Checkout.Services.Services;
 using Checkout.Web.Controllers;
 using Checkout.Web.Models;
 using Microsoft.Extensions.Logging;
@@ -36,7 +37,7 @@ namespace Checkout.Tests.Unit.Controllers
                 .Returns(bankPaymentResponse);
 
             // when
-            await _sut.Post(submitPaymentRequest);
+            await _sut.Post(submitPaymentRequest, Guid.NewGuid().ToString());
 
             // then
             _mockOrchestator.Verify(x => x.ProcessPayment(It.Is<BankPaymentRequest>(y =>

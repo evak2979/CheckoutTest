@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Checkout.Repository.Models;
 
-namespace Checkout.Services
+namespace Checkout.Services.Services
 {
     public class SensitiveDataObfuscator : ISensitiveDataObfuscator
     {

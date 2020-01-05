@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Checkout.Services
+namespace Checkout.Services.Models
 {
     public sealed class MerchantDetails
     {

@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Checkout.Web.Models.Base;
 
 namespace Checkout.Web.Models
 {
     /// <summary>
     /// Request for a new payment to be made
     /// </summary>
-    public class SubmitPaymentRequest
+    public class SubmitPaymentRequest : BaseRequest
     {
         public MerchantDetails MerchantDetails { get; set; }
 

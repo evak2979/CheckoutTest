@@ -2,7 +2,7 @@
 using Checkout.Repository.Models;
 using Checkout.Services.Banks;
 
-namespace Checkout.Services
+namespace Checkout.Services.Services
 {
     public sealed class PaymentOrchestrator : IPaymentOrchestrator
     {
