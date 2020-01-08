@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.0" />
   </ItemGroup>
 
 </Project>

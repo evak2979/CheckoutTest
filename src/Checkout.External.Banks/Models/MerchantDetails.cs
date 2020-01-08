@@ -9,6 +9,6 @@ namespace Checkout.Services.Models
             MerchantId = merchantId;
         }
 
-        public Guid MerchantId { get; private set; }
+        public Guid MerchantId { get; }
     }
 }

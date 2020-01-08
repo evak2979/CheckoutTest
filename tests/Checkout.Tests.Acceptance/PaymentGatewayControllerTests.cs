@@ -28,7 +28,7 @@ namespace Checkout.Tests.Acceptance
             // given
             var submitPaymentRequest = new SubmitPaymentRequest
             {
-                CardDetails = new Web.Models.CardDetails
+                CardDetails = new CardDetails
                 {
                     CVV = 123,
                     Currency = "Pound",
@@ -63,7 +63,7 @@ namespace Checkout.Tests.Acceptance
             // given
             var submitPaymentRequest = new SubmitPaymentRequest
             {
-                CardDetails = new Web.Models.CardDetails
+                CardDetails = new CardDetails
                 {
                     CVV = 123,
                     Currency = "Pound",

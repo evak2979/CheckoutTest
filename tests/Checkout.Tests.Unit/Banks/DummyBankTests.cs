@@ -20,10 +20,7 @@ namespace Checkout.Tests.Unit.Banks
         public void GivenAPayment_WhenAmountLessThanOrEqualToZero_ShouldReturnUnsuccesfullResponse(decimal amount)
         {
             // given + when
-            var response = _sut.ProcessPayment(new BankPaymentRequest
-            {
-                Amount = amount
-            });
+            var response = _sut.ProcessPayment(new BankPaymentRequest(null, null, amount, null));
 
             response.Message.ShouldBe("Unsuccessful Payment - Random reason");
         }

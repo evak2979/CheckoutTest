@@ -1,13 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Checkout.Web.Models.Base;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Checkout.Web.Models
 {
     /// <summary>
     /// Request to retrieve an existing payment
     /// </summary>
-    public sealed class RetrievePaymentRequest : BaseRequest
+    public sealed class RetrievePaymentRequest
     {
         /// <summary>
         /// A payment's unique identifier

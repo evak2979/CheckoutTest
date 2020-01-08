@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Checkout.Services.Banks;
 using Checkout.Services.Services;
@@ -23,15 +24,17 @@ namespace Checkout.Web.Controllers
             _logger = logger;
         }
 
+        /// [FromHeader] not working properly on a property of a model (see https://stackoverflow.com/questions/58038884/fromheaderattribute-doesnt-work-for-properties)
+        /// As such, binding as a parameter and then assigning to request property.
         [HttpPost]
         [ProducesResponseType(typeof(SubmitPaymentResponse), (int)HttpStatusCode.OK)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(SubmitPaymentResponseExample))]
         [SwaggerRequestExample(typeof(SubmitPaymentRequest), typeof(SubmitPaymentRequestExample))]
-        public async Task<IActionResult> Post([FromBody]SubmitPaymentRequest submitPaymentRequest, [FromQuery] string correlationId = null)
+        public async Task<IActionResult> Post(SubmitPaymentRequest submitPaymentRequest, [FromHeader] string correlationId = null)
         {
-            submitPaymentRequest.CorrelationId = correlationId;
+            _logger.LogInformation($"Submit Payment request with correlationId {correlationId} received");
 
-            var bankPaymentRequest = GenerateBankPaymentRequest(submitPaymentRequest);
+            var bankPaymentRequest = GenerateBankPaymentRequest(submitPaymentRequest, correlationId);
             var bankPaymentResponse = _paymentOrchestrator.ProcessPayment(bankPaymentRequest);
 
             return Ok(new SubmitPaymentResponse
@@ -41,15 +44,16 @@ namespace Checkout.Web.Controllers
             });
         }
 
+        /// [FromHeader] not working properly on a property of a model (see https://stackoverflow.com/questions/58038884/fromheaderattribute-doesnt-work-for-properties)
+        /// As such, binding as a parameter and then assigning to request property.
         [HttpGet]
         [ProducesResponseType(typeof(RetrievePaymentResponse), (int)HttpStatusCode.OK)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(RetrievePaymentResponseExample))]
         [SwaggerRequestExample(typeof(RetrievePaymentRequest), typeof(RetrievePaymentRequestExample))]
-        public async Task<IActionResult> Get([FromQuery]RetrievePaymentRequest retrievePaymentRequest, [FromQuery] string correlationId = null)
+        public async Task<IActionResult> Get([FromQuery]RetrievePaymentRequest retrievePaymentRequest, [FromHeader] string correlationId = null)
         {
-            retrievePaymentRequest.CorrelationId = correlationId;
-            
-            var orchestratorPaymentRequest = new Services.Models.RetrievePaymentRequest(retrievePaymentRequest.PaymentId, retrievePaymentRequest.MerchantId);
+            _logger.LogInformation($"Retrieve Payment request with correlationId {correlationId} received");
+            var orchestratorPaymentRequest = new Services.Models.RetrievePaymentRequest(retrievePaymentRequest.PaymentId, retrievePaymentRequest.MerchantId, correlationId);
 
             var payment = _paymentOrchestrator.RetrievePayment(orchestratorPaymentRequest);
 
@@ -64,17 +68,17 @@ namespace Checkout.Web.Controllers
             });
         }
 
-        private BankPaymentRequest GenerateBankPaymentRequest(SubmitPaymentRequest submitPaymentRequest)
+        private BankPaymentRequest GenerateBankPaymentRequest(SubmitPaymentRequest submitPaymentRequest, string correlationId)
         {
-            return new BankPaymentRequest
-            {
-                CardDetails = new Services.Models.CardDetails(submitPaymentRequest.CardDetails.CardNumber,
-                    submitPaymentRequest.CardDetails.ExpiryDate,
-                    submitPaymentRequest.CardDetails.Currency,
-                    submitPaymentRequest.CardDetails.CVV),
-                MerchantDetails = new Services.Models.MerchantDetails(submitPaymentRequest.MerchantDetails.MerchantId),
-                Amount = submitPaymentRequest.Amount
-            };
+            var cardDetails = new Services.Models.CardDetails(submitPaymentRequest.CardDetails.CardNumber,
+                submitPaymentRequest.CardDetails.ExpiryDate,
+                submitPaymentRequest.CardDetails.Currency,
+                submitPaymentRequest.CardDetails.CVV);
+
+            var merchantDetails =
+                new Services.Models.MerchantDetails(submitPaymentRequest.MerchantDetails.MerchantId);
+
+            return new BankPaymentRequest(cardDetails, merchantDetails, submitPaymentRequest.Amount, correlationId);
         }
     }
 }

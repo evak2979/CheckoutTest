@@ -10,12 +10,12 @@
             CVV = cvv;
         }
 
-        public long CardNumber { get; private set; }
+        public long CardNumber { get; }
 
-        public string ExpiryDate { get; private set; }
+        public string ExpiryDate { get; }
 
-        public string Currency { get; private set; }
+        public string Currency { get; }
 
-        public int CVV { get; private set; }
+        public int CVV { get; }
     }
 }

@@ -26,7 +26,7 @@ namespace Checkout.Repository
 
             return payment.Id;
         }
-
+        
         public PaymentReadModel RetrievePayment(RetrievePaymentRequest paymentRequest)
         {
             var payment = _databaseWrapper.Get(paymentRequest);

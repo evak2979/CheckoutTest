@@ -26,7 +26,7 @@ namespace Checkout.Tests.Integration
             var serviceProvider = _servicesHelper.ServiceCollection.BuildServiceProvider();
 
             _sut = new Web.Controllers.PaymentGatewayController(serviceProvider.GetService<IPaymentOrchestrator>(), 
-                serviceProvider.GetService<Logger<Web.Controllers.PaymentGatewayController>>());
+                serviceProvider.GetService<ILogger<Web.Controllers.PaymentGatewayController>>());
         }
 
         [Fact]
@@ -35,14 +35,14 @@ namespace Checkout.Tests.Integration
             // given
             var submitPaymentRequest = new SubmitPaymentRequest
             {
-                CardDetails = new Web.Models.CardDetails
+                CardDetails = new CardDetails
                 {
                     CVV = 123,
                     Currency = "Pound",
                     ExpiryDate = "01/2020",
                     CardNumber = 1234567890123456
                 },
-                MerchantDetails = new Web.Models.MerchantDetails
+                MerchantDetails = new MerchantDetails
                 {
                     MerchantId = Guid.NewGuid()
                 },
@@ -50,7 +50,7 @@ namespace Checkout.Tests.Integration
             };
 
             // when
-            var submitPaymentResponse = await _sut.Post(submitPaymentRequest, Guid.NewGuid().ToString());
+            var submitPaymentResponse = await _sut.Post(submitPaymentRequest);
 
             // then
             submitPaymentResponse.ShouldBeOfType<OkObjectResult>();
@@ -66,20 +66,20 @@ namespace Checkout.Tests.Integration
             // given
             var submitPaymentRequest = new SubmitPaymentRequest
             {
-                CardDetails = new Web.Models.CardDetails
+                CardDetails = new CardDetails
                 {
                     CVV = 123,
                     Currency = "Pound",
                     ExpiryDate = "01/2020",
                     CardNumber = 1234567890123456
                 },
-                MerchantDetails = new Web.Models.MerchantDetails
+                MerchantDetails = new MerchantDetails
                 {
                     MerchantId = Guid.NewGuid()
                 },
                 Amount = 12345
             };
-            var response = await _sut.Post(submitPaymentRequest, Guid.NewGuid().ToString());
+            var response = await _sut.Post(submitPaymentRequest);
             var submitPaymentResponse = (response as OkObjectResult).Value as SubmitPaymentResponse;
             
             // when

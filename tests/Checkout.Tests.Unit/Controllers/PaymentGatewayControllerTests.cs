@@ -37,7 +37,7 @@ namespace Checkout.Tests.Unit.Controllers
                 .Returns(retrievePaymentResponse);
 
             // when
-            await _sut.Get(submitPaymentRequest, Guid.NewGuid().ToString());
+            await _sut.Get(submitPaymentRequest);
 
             // then
             _mockOrchestator.Verify(x => x.RetrievePayment(It.Is<Checkout.Services.Models.RetrievePaymentRequest>(y =>
@@ -56,7 +56,7 @@ namespace Checkout.Tests.Unit.Controllers
                 .Returns(bankPaymentResponse);
 
             // when
-            await _sut.Post(submitPaymentRequest, Guid.NewGuid().ToString());
+            await _sut.Post(submitPaymentRequest);
 
             // then
             _mockOrchestator.Verify(x => x.ProcessPayment(It.Is<BankPaymentRequest>(y =>

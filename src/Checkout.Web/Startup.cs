@@ -15,6 +15,9 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Checkout.Web.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 
 namespace Checkout.Web
@@ -70,6 +73,9 @@ namespace Checkout.Web
             services.AddTransient<ILiteDatabaseWrapper, LiteDatabaseWrapper>();
             services.AddTransient<ICorrelationIdProvider, CorrelationIdProvider>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.TryAdd(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
+            services.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(Logger<>)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

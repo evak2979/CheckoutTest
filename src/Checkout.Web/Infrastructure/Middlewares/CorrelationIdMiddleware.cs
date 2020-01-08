@@ -29,7 +29,7 @@ namespace Checkout.Web.Infrastructure.Middlewares
             using (_logger.BeginScope(("correlation_id", correlationId)))
             {
                 context.TraceIdentifier = correlationId;
-                context.Request.QueryString = context.Request.QueryString.Add("correlationId", correlationId);
+                context.Request.Headers.Add("correlationId", correlationId);
 
                 await _next(context);
             }

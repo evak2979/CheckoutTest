@@ -5,6 +5,7 @@ using Checkout.Repository.Helpers;
 using Checkout.Repository.Models;
 using Checkout.Services.Banks;
 using Checkout.Services.Services;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -16,6 +17,7 @@ namespace Checkout.Tests.Unit.Services
         private Mock<IBankFactory> _mockBankFactory;
         private Mock<IBank> _mockBank;
         private Mock<ISensitiveDataObfuscator> _mockObfuscator;
+        private Mock<ILogger<PaymentOrchestrator>> _mockLogger;
         private PaymentOrchestrator _sut;
         private Fixture _fixture;
 
@@ -25,6 +27,7 @@ namespace Checkout.Tests.Unit.Services
             _mockBankFactory = new Mock<IBankFactory>();
             _mockBank = new Mock<IBank>();
             _mockObfuscator = new Mock<ISensitiveDataObfuscator>();
+            _mockLogger = new Mock<ILogger<PaymentOrchestrator>>();
 
             _fixture = new Fixture();
 
@@ -32,7 +35,7 @@ namespace Checkout.Tests.Unit.Services
                 .Returns(_mockBank.Object);
 
             _sut = new PaymentOrchestrator(_mockPaymentRepository.Object, _mockBankFactory.Object,
-                _mockObfuscator.Object);
+                _mockObfuscator.Object, _mockLogger.Object);
         }
 
         [Fact]

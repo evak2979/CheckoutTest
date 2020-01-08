@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Checkout.Repository\Checkout.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Base\" />
+  </ItemGroup>
+
 </Project>
