@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -98,6 +99,45 @@ namespace Checkout.Tests.Acceptance
             retrievedPayment.ExpiryDate.ShouldBe(submitPaymentRequest.CardDetails.ExpiryDate);
             retrievedPayment.Currency.ShouldBe(submitPaymentRequest.CardDetails.Currency);
             retrievedPayment.PaymentResponseStatus.ShouldBe("Successful");
+        }
+
+        [Fact]
+        public async Task GivenAPaymentRequest_WhenPaymenDoesNotExist_ShouldReturn404()
+        {
+            // given + when
+            var retrievePaymentResponse = await _httpClient.GetAsync($"https://localhost:9901/paymentgateway?paymentId={Guid.NewGuid()}&merchantId={Guid.NewGuid()}");
+
+            // then
+            retrievePaymentResponse.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task GivenASubmitPaymentRequest_WhenPaymentUnsuccessful_ShouldReturn400()
+        {
+            // given
+            var submitPaymentRequest = new SubmitPaymentRequest
+            {
+                CardDetails = new CardDetails
+                {
+                    CVV = 123,
+                    Currency = "Pound",
+                    ExpiryDate = "01/2020",
+                    CardNumber = 1234567890123456
+                },
+                MerchantDetails = new MerchantDetails
+                {
+                    MerchantId = Guid.NewGuid()
+                },
+                Amount = -1000
+            };
+            var jsonRequest = JsonConvert.SerializeObject(submitPaymentRequest);
+
+            // when
+            var submitPaymentResponse = await _httpClient.PostAsync("https://localhost:9901/paymentgateway",
+                new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
+
+            // then
+            submitPaymentResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         }
     }
 }

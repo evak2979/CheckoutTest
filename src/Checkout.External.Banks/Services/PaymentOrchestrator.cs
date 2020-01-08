@@ -28,7 +28,7 @@ namespace Checkout.Services.Services
             var vendorBank = _bankFactory.Create(bankPaymentRequest.MerchantDetails.MerchantId);
             var bankPaymentResponse = vendorBank.ProcessPayment(bankPaymentRequest);
 
-            _paymentRepository.CreatePayment(GenerateRepositoryPayment(bankPaymentRequest, bankPaymentResponse));
+            _paymentRepository.CreatePayment(GenerateRepositoryPayment(bankPaymentRequest, bankPaymentResponse), bankPaymentRequest.CorrelationId);
 
             return bankPaymentResponse;
         }
@@ -36,9 +36,12 @@ namespace Checkout.Services.Services
         public Models.PaymentReadModel RetrievePayment(Models.RetrievePaymentRequest paymentRequest)
         {
             var repoPaymentRequest =
-                new RetrievePaymentRequest(paymentRequest.PaymentId, paymentRequest.MerchantId);
+                new RetrievePaymentRequest(paymentRequest.PaymentId, paymentRequest.MerchantId, paymentRequest.CorrelationId);
 
-            var paymentRequestResponse = _paymentRepository.RetrievePayment(repoPaymentRequest);
+            var paymentRequestResponse = _paymentRepository.RetrievePayment(repoPaymentRequest, paymentRequest.CorrelationId);
+
+            if (paymentRequestResponse == null)
+                return null;
 
             return Models.PaymentReadModel.BuildPaymentReadModel(paymentRequestResponse);
         }

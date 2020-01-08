@@ -28,6 +28,7 @@ namespace Checkout.Web.Controllers
         /// As such, binding as a parameter and then assigning to request property.
         [HttpPost]
         [ProducesResponseType(typeof(SubmitPaymentResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(SubmitPaymentResponseExample))]
         [SwaggerRequestExample(typeof(SubmitPaymentRequest), typeof(SubmitPaymentRequestExample))]
         public async Task<IActionResult> Post(SubmitPaymentRequest submitPaymentRequest, [FromHeader] string correlationId = null)
@@ -37,17 +38,25 @@ namespace Checkout.Web.Controllers
             var bankPaymentRequest = GenerateBankPaymentRequest(submitPaymentRequest, correlationId);
             var bankPaymentResponse = _paymentOrchestrator.ProcessPayment(bankPaymentRequest);
 
-            return Ok(new SubmitPaymentResponse
+            if (bankPaymentResponse.BankPaymentResponseStatus == BankPaymentResponseStatus.Successful)
             {
-                PaymentId = bankPaymentResponse.PaymentId,
-                PaymentResponseStatus = bankPaymentResponse.BankPaymentResponseStatus.ToString()
-            });
+                return Ok(new SubmitPaymentResponse
+                {
+                    PaymentId = bankPaymentResponse.PaymentId,
+                    PaymentResponseStatus = bankPaymentResponse.BankPaymentResponseStatus.ToString()
+                });
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         /// [FromHeader] not working properly on a property of a model (see https://stackoverflow.com/questions/58038884/fromheaderattribute-doesnt-work-for-properties)
         /// As such, binding as a parameter and then assigning to request property.
         [HttpGet]
         [ProducesResponseType(typeof(RetrievePaymentResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(RetrievePaymentResponseExample))]
         [SwaggerRequestExample(typeof(RetrievePaymentRequest), typeof(RetrievePaymentRequestExample))]
         public async Task<IActionResult> Get([FromQuery]RetrievePaymentRequest retrievePaymentRequest, [FromHeader] string correlationId = null)
@@ -57,15 +66,22 @@ namespace Checkout.Web.Controllers
 
             var payment = _paymentOrchestrator.RetrievePayment(orchestratorPaymentRequest);
 
-            return Ok(new RetrievePaymentResponse
+            if (payment != null)
             {
-                CVV = payment.CVV,
-                Currency = payment.Currency,
-                ExpiryDate = payment.ExpiryDate,
-                PaymentResponseStatus = payment.PaymentStatus,
-                CardNumber = payment.CardNumber,
-                Amount = payment.Amount
-            });
+                return Ok(new RetrievePaymentResponse
+                {
+                    CVV = payment.CVV,
+                    Currency = payment.Currency,
+                    ExpiryDate = payment.ExpiryDate,
+                    PaymentResponseStatus = payment.PaymentStatus,
+                    CardNumber = payment.CardNumber,
+                    Amount = payment.Amount
+                });
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         private BankPaymentRequest GenerateBankPaymentRequest(SubmitPaymentRequest submitPaymentRequest, string correlationId)
@@ -77,7 +93,6 @@ namespace Checkout.Web.Controllers
 
             var merchantDetails =
                 new Services.Models.MerchantDetails(submitPaymentRequest.MerchantDetails.MerchantId);
-
             return new BankPaymentRequest(cardDetails, merchantDetails, submitPaymentRequest.Amount, correlationId);
         }
     }

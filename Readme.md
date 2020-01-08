@@ -3,6 +3,30 @@
 
 A RESTful API that handles 3rd party payments. Current iteration allows the receipt and process of a payment, as well as the retrieving of an existing payment.
 
+## Flow
+
+```mermaid
+graph LR
+A[Submit Payment] --> B{Request ok?}
+B --YES--> C{Bank Payment Successful?}
+C --YES--> D[Mask Payment Fields, store them locally]
+D --> E[Return 200, Successful and PaymentId]
+C --NO--> F[Mask Payment Fields, store them locally]
+F --> G[Return 400, Unsuccessful and PaymentId]
+B --NO--> H[Request Malformed]
+H --> I[Return 400]
+```
+
+```mermaid
+graph LR
+A[RetrievePayment] --> B{Request ok?}
+B --YES--> C{Payment Exists Locally?}
+C --YES--> D[Return Payment details, and code 200]
+C --NO--> F[Return 404, not found]
+B --NO--> H[Request Malformed]
+H --> I[Return 400]
+```
+
 ## Setting up locally
 
 Open a Powershell window in the solution directory and execute the following command:

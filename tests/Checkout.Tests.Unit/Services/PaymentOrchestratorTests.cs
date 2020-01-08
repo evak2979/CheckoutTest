@@ -102,7 +102,7 @@ namespace Checkout.Tests.Unit.Services
                 y.CardDetails.CVV == returnedCVV && 
                 y.CardDetails.CardNumber == returnedCardNumber && 
                 y.CardDetails.ExpiryDate == paymentRequest.CardDetails.ExpiryDate && 
-                y.CardDetails.Currency == paymentRequest.CardDetails.Currency)));
+                y.CardDetails.Currency == paymentRequest.CardDetails.Currency), paymentRequest.CorrelationId));
         }
 
         [Fact]
@@ -113,7 +113,7 @@ namespace Checkout.Tests.Unit.Services
                 PaymentReadModel.BuildPaymentReadModel(_fixture.Create<PaymentInformation>());
 
             var paymentRequest = _fixture.Create<Checkout.Services.Models.RetrievePaymentRequest>();
-            _mockPaymentRepository.Setup(x => x.RetrievePayment(It.IsAny<RetrievePaymentRequest>()))
+            _mockPaymentRepository.Setup(x => x.RetrievePayment(It.IsAny<RetrievePaymentRequest>(), paymentRequest.CorrelationId))
                 .Returns(payment);
 
             // when
@@ -121,7 +121,7 @@ namespace Checkout.Tests.Unit.Services
 
             // then
             _mockPaymentRepository.Verify(x => x.RetrievePayment(It.Is<RetrievePaymentRequest>(y => y.PaymentId == paymentRequest.PaymentId &&
-                                                                                            y.MerchantId == paymentRequest.MerchantId)));
+                                                                                            y.MerchantId == paymentRequest.MerchantId), paymentRequest.CorrelationId));
         }
     }
 }

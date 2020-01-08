@@ -100,5 +100,46 @@ namespace Checkout.Tests.Integration
             retrievedPayment.Currency.ShouldBe(submitPaymentRequest.CardDetails.Currency);
             retrievedPayment.PaymentResponseStatus.ShouldBe("Successful");
         }
+
+        [Fact]
+        public async Task GivenAretrievePaymentRequest_WhenPaymentDoesNotExist_ShouldReturn404()
+        {
+            // given +  when
+            var retrievePaymentResponse = await _sut.Get(new RetrievePaymentRequest
+            {
+                PaymentId = Guid.NewGuid(),
+                MerchantId = Guid.NewGuid()
+            });
+
+            // then
+            retrievePaymentResponse.ShouldBeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task GivenASubmitPaymentRequest_WhenUnsuccessful_ShouldReturn400()
+        {
+            // given
+            var submitPaymentRequest = new SubmitPaymentRequest
+            {
+                CardDetails = new CardDetails
+                {
+                    CVV = 123,
+                    Currency = "Pound",
+                    ExpiryDate = "01/2020",
+                    CardNumber = 1234567890123456
+                },
+                MerchantDetails = new MerchantDetails
+                {
+                    MerchantId = Guid.NewGuid()
+                },
+                Amount = -10000
+            };
+
+            // when
+            var submitPaymentResponse = await _sut.Post(submitPaymentRequest);
+
+            // then
+            submitPaymentResponse.ShouldBeOfType<BadRequestResult>();
+        }
     }
 }
