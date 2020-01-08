@@ -3,10 +3,16 @@ using Checkout.Repository.Models.Base;
 
 namespace Checkout.Services.Models
 {
-    public class RetrievePaymentRequest : BaseRequest
+    public sealed class RetrievePaymentRequest : BaseRequest
     {
-        public Guid PaymentId { get; set; }
+        public RetrievePaymentRequest(Guid paymentId, Guid merchantId)
+        {
+            PaymentId = paymentId;
+            MerchantId = merchantId;
+        }
 
-        public Guid MerchantId { get; set; }
+        public Guid PaymentId { get; private set; }
+
+        public Guid MerchantId { get; private set; }
     }
 }

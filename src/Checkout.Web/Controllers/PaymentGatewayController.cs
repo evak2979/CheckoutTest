@@ -49,12 +49,7 @@ namespace Checkout.Web.Controllers
         {
             retrievePaymentRequest.CorrelationId = correlationId;
             
-            var orchestratorPaymentRequest = new Services.Models.RetrievePaymentRequest
-            {
-                PaymentId = retrievePaymentRequest.PaymentId,
-                MerchantId = retrievePaymentRequest.MerchantId,
-                CorrelationId = correlationId
-            };
+            var orchestratorPaymentRequest = new Services.Models.RetrievePaymentRequest(retrievePaymentRequest.PaymentId, retrievePaymentRequest.MerchantId);
 
             var payment = _paymentOrchestrator.RetrievePayment(orchestratorPaymentRequest);
 
@@ -73,17 +68,11 @@ namespace Checkout.Web.Controllers
         {
             return new BankPaymentRequest
             {
-                CardDetails = new Services.Models.CardDetails
-                {
-                    CardNumber = submitPaymentRequest.CardDetails.CardNumber,
-                    CVV = submitPaymentRequest.CardDetails.CVV,
-                    ExpiryDate = submitPaymentRequest.CardDetails.ExpiryDate,
-                    Currency = submitPaymentRequest.CardDetails.Currency
-                },
-                MerchantDetails = new Services.Models.MerchantDetails
-                {
-                    MerchantId = submitPaymentRequest.MerchantDetails.Id
-                },
+                CardDetails = new Services.Models.CardDetails(submitPaymentRequest.CardDetails.CardNumber,
+                    submitPaymentRequest.CardDetails.ExpiryDate,
+                    submitPaymentRequest.CardDetails.Currency,
+                    submitPaymentRequest.CardDetails.CVV),
+                MerchantDetails = new Services.Models.MerchantDetails(submitPaymentRequest.MerchantDetails.MerchantId),
                 Amount = submitPaymentRequest.Amount
             };
         }

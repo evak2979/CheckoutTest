@@ -1,13 +1,21 @@
 ﻿namespace Checkout.Services.Models
 {
-    public class CardDetails
+    public sealed class CardDetails
     {
-        public long CardNumber { get; set; }
+        public CardDetails(long cardNumber, string expiryDate, string currency, int cvv)
+        {
+            CardNumber = cardNumber;
+            ExpiryDate = expiryDate;
+            Currency = currency;
+            CVV = cvv;
+        }
 
-        public string ExpiryDate { get; set; }
+        public long CardNumber { get; private set; }
 
-        public string Currency { get; set; }
+        public string ExpiryDate { get; private set; }
 
-        public int CVV { get; set; }
+        public string Currency { get; private set; }
+
+        public int CVV { get; private set; }
     }
 }

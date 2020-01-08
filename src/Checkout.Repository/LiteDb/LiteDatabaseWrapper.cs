@@ -23,7 +23,7 @@ namespace Checkout.Repository.LiteDb
             {
                 var payments = db.GetCollection<PaymentInformation>("payments");
                 
-                return payments.Find(x => x.Id ==paymentRequest.PaymentId && x.MerchantDetails.Id == paymentRequest.MerchantId).FirstOrDefault();
+                return payments.Find(x => x.Id ==paymentRequest.PaymentId && x.MerchantDetails.MerchantId == paymentRequest.MerchantId).FirstOrDefault();
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using Checkout.Repository.Models;
+﻿using Checkout.Repository.Helpers;
 using Checkout.Services.Services;
 using Shouldly;
 using Xunit;
@@ -17,41 +17,21 @@ namespace Checkout.Tests.Unit.Services
         [Fact]
         public void GivenAPayment_WhenObfuscating_ShouldHideTheMiddleEightDigitsOfTheCardLongNumber()
         {
-            // given
-            var payment = new PaymentInformation
-            {
-                CardDetails = new Repository.Models.CardDetails
-                {
-                    CardNumber = "1234567891012345",
-                    CVV = "123"
-                }
-            };
-
-            // when
-            _sut.Obfuscate(payment);
+            // given +  when
+            var result = _sut.ObfuscateLongCardNumber("1234567891012345");
 
             // then
-            payment.CardDetails.CardNumber.ShouldBe("1234********2345");
+            result.ShouldBe("1234********2345");
         }
 
         [Fact]
         public void GivenAPayment_WhenObfuscating_ShouldHideTheCardsCVV()
         {
-            // given
-            var payment = new PaymentInformation
-            {
-                CardDetails = new Repository.Models.CardDetails
-                {
-                    CardNumber = "1234567891012345",
-                    CVV = "123"
-                }
-            };
-
-            // when
-            _sut.Obfuscate(payment);
+            // given +  when
+            var result = _sut.ObfuscateCvv("123");
 
             // then
-            payment.CardDetails.CVV.ShouldBe("***");
+            result.ShouldBe("***");
         }
     }
 }

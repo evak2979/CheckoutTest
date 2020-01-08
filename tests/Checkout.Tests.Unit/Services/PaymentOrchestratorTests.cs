@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoFixture;
 using Checkout.Repository;
+using Checkout.Repository.Helpers;
 using Checkout.Repository.Models;
 using Checkout.Services.Banks;
 using Checkout.Services.Services;
@@ -102,7 +103,7 @@ namespace Checkout.Tests.Unit.Services
         {
             // given
             var payment =
-                Repository.Models.PaymentReadModel.BuildPaymentReadModel(_fixture.Create<PaymentInformation>());
+                PaymentReadModel.BuildPaymentReadModel(_fixture.Create<PaymentInformation>());
 
             var paymentRequest = _fixture.Create<Checkout.Services.Models.RetrievePaymentRequest>();
             _mockPaymentRepository.Setup(x => x.RetrievePayment(It.IsAny<RetrievePaymentRequest>()))

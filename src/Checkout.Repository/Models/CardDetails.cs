@@ -1,13 +1,34 @@
-﻿namespace Checkout.Repository.Models
+﻿using Checkout.Repository.Helpers;
+
+namespace Checkout.Repository.Models
 {
-    public class CardDetails
+    public sealed class CardDetails
     {
-        public string CardNumber { get; set; }
+        public CardDetails()
+        {
+            
+        }
 
-        public string ExpiryDate { get; set; }
+        public CardDetails(string cardNumber, string expiryDate, string currency, string cvv)
+        {
+            CardNumber = cardNumber;
+            ExpiryDate = expiryDate;
+            Currency = currency;
+            CVV = cvv;
+        }
 
-        public string Currency { get; set; }
+        public string CardNumber { get; private set; }
 
-        public string CVV { get; set; }
+        public string ExpiryDate { get; private set; }
+
+        public string Currency { get; private set; }
+
+        public string CVV { get; private set; }
+
+        public void Obfuscate(ISensitiveDataObfuscator dataObfuscator)
+        {
+            CVV = dataObfuscator.ObfuscateCvv(CVV);
+            CardNumber = dataObfuscator.ObfuscateLongCardNumber(CardNumber);
+        }
     }
 }

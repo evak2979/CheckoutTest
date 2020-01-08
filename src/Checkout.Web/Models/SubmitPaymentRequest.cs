@@ -6,7 +6,7 @@ namespace Checkout.Web.Models
     /// <summary>
     /// Request for a new payment to be made
     /// </summary>
-    public class SubmitPaymentRequest : BaseRequest
+    public sealed class SubmitPaymentRequest : BaseRequest
     {
         public MerchantDetails MerchantDetails { get; set; }
 

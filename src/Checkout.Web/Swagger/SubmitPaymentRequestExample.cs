@@ -20,7 +20,7 @@ namespace Checkout.Web.Swagger
                 Amount = 12345,
                 MerchantDetails = new MerchantDetails
                 {
-                    Id = Guid.NewGuid()
+                    MerchantId = Guid.NewGuid()
                 }
             };
         }

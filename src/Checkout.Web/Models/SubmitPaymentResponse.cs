@@ -5,7 +5,7 @@ namespace Checkout.Web.Models
     /// <summary>
     /// Response after a payment has been submitted
     /// </summary>
-    public class SubmitPaymentResponse
+    public sealed class SubmitPaymentResponse
     {
         /// <summary>
         /// The payment's unique identifier

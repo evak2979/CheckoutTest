@@ -6,7 +6,6 @@ using Checkout.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Shouldly;
 using Xunit;
 
@@ -45,7 +44,7 @@ namespace Checkout.Tests.Integration
                 },
                 MerchantDetails = new Web.Models.MerchantDetails
                 {
-                    Id = Guid.NewGuid()
+                    MerchantId = Guid.NewGuid()
                 },
                 Amount = 12345
             };
@@ -76,7 +75,7 @@ namespace Checkout.Tests.Integration
                 },
                 MerchantDetails = new Web.Models.MerchantDetails
                 {
-                    Id = Guid.NewGuid()
+                    MerchantId = Guid.NewGuid()
                 },
                 Amount = 12345
             };
@@ -87,7 +86,7 @@ namespace Checkout.Tests.Integration
             var retrievePaymentResponse = await _sut.Get(new RetrievePaymentRequest
             {
                 PaymentId = submitPaymentResponse.PaymentId,
-                MerchantId = submitPaymentRequest.MerchantDetails.Id
+                MerchantId = submitPaymentRequest.MerchantDetails.MerchantId
             });
 
             // then

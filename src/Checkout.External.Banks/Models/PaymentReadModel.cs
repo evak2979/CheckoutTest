@@ -2,7 +2,7 @@
 
 namespace Checkout.Services.Models
 {
-    public class PaymentReadModel
+    public sealed class PaymentReadModel
     {
         public string CardNumber { get; private set; }
 

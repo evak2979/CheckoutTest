@@ -1,6 +1,7 @@
 using System.IO;
 using System.Reflection;
 using Checkout.Repository;
+using Checkout.Repository.Helpers;
 using Checkout.Repository.LiteDb;
 using Checkout.Services.Banks;
 using Checkout.Services.Services;

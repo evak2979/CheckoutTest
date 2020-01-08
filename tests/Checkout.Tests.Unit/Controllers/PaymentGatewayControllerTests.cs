@@ -65,7 +65,7 @@ namespace Checkout.Tests.Unit.Controllers
                 y.CardDetails.CardNumber == submitPaymentRequest.CardDetails.CardNumber &&
                 y.CardDetails.ExpiryDate == submitPaymentRequest.CardDetails.ExpiryDate &&
                 y.CardDetails.Currency == submitPaymentRequest.CardDetails.Currency &&
-                y.MerchantDetails.MerchantId == submitPaymentRequest.MerchantDetails.Id
+                y.MerchantDetails.MerchantId == submitPaymentRequest.MerchantDetails.MerchantId
             )));
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using Checkout.Repository.Models;
 
 namespace Checkout.Repository.Models
 {
@@ -19,7 +18,7 @@ namespace Checkout.Repository.Models
 
         public Guid MerchantId{ get; private set; }
 
-        public string PaymentStatus { get; set; }
+        public string PaymentStatus { get; private set; }
 
         public static PaymentReadModel BuildPaymentReadModel(PaymentInformation payment)
         {
@@ -29,7 +28,7 @@ namespace Checkout.Repository.Models
                 ExpiryDate = payment.CardDetails.ExpiryDate,
                 CVV = payment.CardDetails.CVV,
                 Amount = payment.Amount,
-                MerchantId = payment.MerchantDetails.Id,
+                MerchantId = payment.MerchantDetails.MerchantId,
                 PaymentId = payment.Id,
                 Currency = payment.CardDetails.Currency,
                 PaymentStatus = payment.PaymentStatus

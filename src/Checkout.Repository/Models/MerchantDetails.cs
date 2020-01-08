@@ -2,8 +2,18 @@
 
 namespace Checkout.Repository.Models
 {
-    public class MerchantDetails
+    public sealed class MerchantDetails
     {
-        public Guid Id { get; set; }
+        public MerchantDetails()
+        {
+            
+        }
+
+        public MerchantDetails(Guid merchantId)
+        {
+            MerchantId = merchantId;
+        }
+
+        public Guid MerchantId { get; private set; }
     }
 }

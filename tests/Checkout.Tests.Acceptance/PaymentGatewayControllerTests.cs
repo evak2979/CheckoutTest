@@ -37,7 +37,7 @@ namespace Checkout.Tests.Acceptance
                 },
                 MerchantDetails = new MerchantDetails
                 {
-                    Id = Guid.NewGuid()
+                    MerchantId = Guid.NewGuid()
                 },
                 Amount = 12345
             };
@@ -72,7 +72,7 @@ namespace Checkout.Tests.Acceptance
                 },
                 MerchantDetails = new MerchantDetails
                 {
-                    Id = Guid.NewGuid()
+                    MerchantId = Guid.NewGuid()
                 },
                 Amount = 12345
             };
@@ -84,7 +84,7 @@ namespace Checkout.Tests.Acceptance
             var paymentInformation = JsonConvert.DeserializeObject<SubmitPaymentResponse>(responseContent);
 
             // when
-            var retrievePaymentResponse = await _httpClient.GetAsync($"https://localhost:9901/paymentgateway?paymentId={paymentInformation.PaymentId}&merchantId={submitPaymentRequest.MerchantDetails.Id}");
+            var retrievePaymentResponse = await _httpClient.GetAsync($"https://localhost:9901/paymentgateway?paymentId={paymentInformation.PaymentId}&merchantId={submitPaymentRequest.MerchantDetails.MerchantId}");
 
             // then
             retrievePaymentResponse.IsSuccessStatusCode.ShouldBeTrue();
