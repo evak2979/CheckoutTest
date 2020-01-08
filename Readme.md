@@ -1,33 +1,24 @@
-﻿# Payment Gateway
+﻿
+# Payment Gateway
 
 
 A RESTful API that handles 3rd party payments. Current iteration allows the receipt and process of a payment, as well as the retrieving of an existing payment.
 
-## Flow
+# Flow
 
-```mermaid
-graph LR
-A[Submit Payment] --> B{Request ok?}
-B --YES--> C{Bank Payment Successful?}
-C --YES--> D[Mask Payment Fields, store them locally]
-D --> E[Return 200, Successful and PaymentId]
-C --NO--> F[Mask Payment Fields, store them locally]
-F --> G[Return 400, Unsuccessful and PaymentId]
-B --NO--> H[Request Malformed]
-H --> I[Return 400]
-```
+## Submit Payment
 
-```mermaid
-graph LR
-A[RetrievePayment] --> B{Request ok?}
-B --YES--> C{Payment Exists Locally?}
-C --YES--> D[Return Payment details, and code 200]
-C --NO--> F[Return 404, not found]
-B --NO--> H[Request Malformed]
-H --> I[Return 400]
-```
+![Submit Payment](https://github.com/evak2979/CheckoutTest/blob/master/CFLow.jpeg?raw=true)
 
-## Setting up locally
+## Retrieve Payment
+
+![enter image description here](https://github.com/evak2979/CheckoutTest/blob/master/API%20Flowchart.jpeg?raw=true)
+
+# Setting up locally
+
+You will need .NET SDK 3.1 installed. The solution was built and compiled using VS 2019.
+
+To run:
 
 Open a Powershell window in the solution directory and execute the following command:
 
@@ -43,11 +34,6 @@ http://localhost:8800/swagger/index.html
 ## Credentials
 
 At this moment in time no Authentication/Authorization is setup. In order to retrieve a payment however, one must provide the API with both the PaymentId and the MerchantId. This is to offer a small amount of protection, and to ensure that only a Merchant related to a particular payment can access that payment.
-
-Authentication/Authorization suggestions for future reference:
-
-- Incorporate IdentityServer4 and utilize the UseIdentityServer Middleware.
-- Use a cloud provider such as AWS and allow them to handle Authentication/Authorization (e.g. API Gateway + Lambda Authorizer)
 
 ## Endpoints and parameters:
 
@@ -100,6 +86,14 @@ Example Response:
 
 ## Logging:
 
-The .NET Core logger is being used. An ErrorHandling Middleware has been added to try and catch errors on request level.  
+The .NET Core logger is being used. An ErrorHandling Middleware has been added to try and catch errors on request level.  Individual logging takes place through the workflow, kept minimal - to be checked with team for GDPR concerns before including more information.
 
 # Notes
+
+- **Application Metrics**: Kept to a minimum through the RequestTimeTracking middleware. A quick search suggested an open source library that may help improve metrics ([https://www.app-metrics.io/](https://www.app-metrics.io/))
+- **Containerization**: The app includes a docker-compose and a docker-file that allow it to be contenarized and deployed/ran on either linux or windows containers.
+- **Authentication **: Skipped for now - a suggestion would be to use a cloud provider such as AWS, and API Gateway that allows Authorization through custom lambda functions. Furthermore API keys integrate nicely with a few popular alert software (such as datadog, new relic, etc.)
+- **API Client**: Tested with POSTman; The API can serve a variety of clients, mobile, SPA/Web, desktop to name but a few.
+- **Build script / CI**: Can deploy and run tests on each environment by using a powershell script and arranging build steps and artifact dependencies on T.C.
+- **Encryption **: To begin with, the SSL version of the API should be used. Furthermore we should look into encrypting whatever information we decide to store about the merchant and the payment. We should also take GDPR into account and make sure we do not persist more than needed.
+- **Data storage**: LiteDB has been used; this can be changed to any provider we so desire, as the Repository project is isolated, and DW functionality is exposed via an interface.
