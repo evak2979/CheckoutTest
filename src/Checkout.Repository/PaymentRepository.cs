@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Checkout.Repository
 {
-    public class PaymentRepository : IPaymentRepository
+    public sealed class PaymentRepository : IPaymentRepository
     {
         private readonly ILiteDatabaseWrapper _databaseWrapper;
         private readonly ILogger<PaymentRepository> _logger;

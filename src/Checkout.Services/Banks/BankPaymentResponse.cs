@@ -2,7 +2,7 @@
 
 namespace Checkout.Services.Banks
 {
-    public class BankPaymentResponse
+    public sealed class BankPaymentResponse
     {
         public Guid PaymentId { get; set; }
 

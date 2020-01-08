@@ -8,7 +8,7 @@ namespace Checkout.Web.Infrastructure.Middlewares
     /// <summary>
     /// Based on: https://www.stevejgordon.co.uk/asp-net-core-correlation-ids
     /// </summary>
-    public class CorrelationIdMiddleware
+    public sealed class CorrelationIdMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ICorrelationIdProvider _correlationIdProvider;

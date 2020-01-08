@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.Filters;
 
 namespace Checkout.Web.Swagger
 {
-    public class RetrievePaymentResponseExample : IExamplesProvider<RetrievePaymentResponse>
+    public sealed class RetrievePaymentResponseExample : IExamplesProvider<RetrievePaymentResponse>
     {
         public RetrievePaymentResponse GetExamples()
         {

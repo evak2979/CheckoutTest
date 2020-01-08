@@ -3,7 +3,7 @@ using Checkout.Repository.Models.Base;
 
 namespace Checkout.Repository.Models
 {
-    public class PaymentInformation : BaseRequest
+    public sealed class PaymentInformation : BaseRequest
     {
         public Guid Id { get; set; }
 

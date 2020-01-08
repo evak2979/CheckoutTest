@@ -1,5 +1,4 @@
 ﻿using Checkout.Repository.Helpers;
-using Checkout.Services.Services;
 using Shouldly;
 using Xunit;
 

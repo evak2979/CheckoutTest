@@ -17,12 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Checkout.External.Banks\Checkout.Services.csproj" />
-    <ProjectReference Include="..\Checkout.Repository\Checkout.Repository.csproj" />
+    <Folder Include="Models\Base\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Base\" />
+    <ProjectReference Include="..\Checkout.Services\Checkout.Services.csproj" />
   </ItemGroup>
 
 </Project>

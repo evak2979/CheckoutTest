@@ -4,8 +4,7 @@ using Checkout.Repository.Models;
 using Checkout.Services.Banks;
 using Microsoft.Extensions.Logging;
 
-
-namespace Checkout.Services.Services
+namespace Checkout.Services
 {
     public sealed class PaymentOrchestrator : IPaymentOrchestrator
     {

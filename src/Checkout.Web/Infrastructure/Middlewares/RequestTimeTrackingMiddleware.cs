@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Checkout.Web.Infrastructure.Middlewares
 {
-    public class RequestTimeTrackingMiddleware
+    public sealed class RequestTimeTrackingMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<RequestTimeTrackingMiddleware> _logger;

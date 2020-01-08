@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoFixture;
+using Checkout.Services;
 using Checkout.Services.Banks;
-using Checkout.Services.Services;
 using Checkout.Web.Controllers;
 using Checkout.Web.Models;
 using Microsoft.Extensions.Logging;

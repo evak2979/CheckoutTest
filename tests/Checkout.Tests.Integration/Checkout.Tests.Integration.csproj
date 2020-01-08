@@ -15,8 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Checkout.External.Banks\Checkout.Services.csproj" />
-    <ProjectReference Include="..\..\src\Checkout.Repository\Checkout.Repository.csproj" />
     <ProjectReference Include="..\..\src\Checkout.Web\Checkout.Web.csproj" />
   </ItemGroup>
 

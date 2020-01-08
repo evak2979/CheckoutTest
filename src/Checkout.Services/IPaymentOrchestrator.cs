@@ -1,7 +1,7 @@
 ﻿using Checkout.Services.Banks;
 using Checkout.Services.Models;
 
-namespace Checkout.Services.Services
+namespace Checkout.Services
 {
     public interface IPaymentOrchestrator
     {

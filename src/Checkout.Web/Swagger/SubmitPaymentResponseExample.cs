@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Filters;
 
 namespace Checkout.Web.Swagger
 {
-    public class SubmitPaymentResponseExample : IExamplesProvider<SubmitPaymentResponse>
+    public sealed class SubmitPaymentResponseExample : IExamplesProvider<SubmitPaymentResponse>
     {
         public SubmitPaymentResponse GetExamples()
         {

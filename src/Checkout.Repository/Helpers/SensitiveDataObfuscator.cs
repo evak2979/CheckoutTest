@@ -2,7 +2,7 @@
 
 namespace Checkout.Repository.Helpers
 {
-    public class SensitiveDataObfuscator : ISensitiveDataObfuscator
+    public sealed class SensitiveDataObfuscator : ISensitiveDataObfuscator
     {
         public string ObfuscateCvv(string cvv)
         {

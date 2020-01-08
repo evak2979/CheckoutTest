@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Checkout.Services.Services;
+using Checkout.Services;
 using Checkout.Tests.Integration.Helpers;
 using Checkout.Web.Models;
 using Microsoft.AspNetCore.Mvc;

@@ -2,7 +2,7 @@
 
 namespace Checkout.Services.Banks.DummyBank
 {
-    public class DummyBank : IBank
+    public sealed class DummyBank : IBank
     {
         public BankPaymentResponse ProcessPayment(BankPaymentRequest bankPaymentRequest)
         {

@@ -1,9 +1,9 @@
-﻿using Checkout.Repository.Models.Base;
-using Checkout.Services.Models;
+﻿using Checkout.Services.Models;
+using Checkout.Services.Models.Base;
 
 namespace Checkout.Services.Banks
 {
-    public class BankPaymentRequest : BaseRequest
+    public sealed class BankPaymentRequest : BaseRequest
     {
         public BankPaymentRequest(CardDetails cardDetails, MerchantDetails merchantDetails, decimal amount, string correlationId)
         {

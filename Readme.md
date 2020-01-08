@@ -46,7 +46,7 @@ Example Request:
 
     {  
        "merchantDetails":  {  
-    "      id":  "bc104267-fea7-48a8-9734-64fd2b9bd42a"  
+    "      merchantId":  "bc104267-fea7-48a8-9734-64fd2b9bd42a"  
        },  
     "cardDetails":  {  
        "cardNumber":  1234567890123456,
@@ -68,11 +68,11 @@ Example Request:
 
 A GET Request at:
 
-http://localhost:8800/
+http://localhost:8800/paymentgateway
 
 Example Request:
 
-http://localhost:8800/?merchantId=bc104267-fea7-48a8-9734-64fd2b9bd42a&paymentId=64fd2b9b-fea7-48a8-9734-64fd2b9bd42a
+http://localhost:8800/paymentgateway?merchantId=bc104267-fea7-48a8-9734-64fd2b9bd42a&paymentId=64fd2b9b-fea7-48a8-9734-64fd2b9bd42a
 
 Example Response:
 

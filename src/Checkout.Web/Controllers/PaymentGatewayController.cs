@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Checkout.Services;
 using Checkout.Services.Banks;
-using Checkout.Services.Services;
 using Checkout.Web.Models;
 using Checkout.Web.Swagger;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ namespace Checkout.Web.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(SubmitPaymentResponseExample))]
         [SwaggerRequestExample(typeof(SubmitPaymentRequest), typeof(SubmitPaymentRequestExample))]
-        public async Task<IActionResult> Post(SubmitPaymentRequest submitPaymentRequest, [FromHeader] string correlationId = null)
+        public async Task<IActionResult> Post([FromBody]SubmitPaymentRequest submitPaymentRequest, [FromHeader] string correlationId = null)
         {
             _logger.LogInformation($"Submit Payment request with correlationId {correlationId} received");
 

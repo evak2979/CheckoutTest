@@ -4,7 +4,7 @@ using LiteDB;
 
 namespace Checkout.Repository.LiteDb
 {
-    public class LiteDatabaseWrapper : ILiteDatabaseWrapper
+    public sealed class LiteDatabaseWrapper : ILiteDatabaseWrapper
     {
         public void Insert(PaymentInformation payment)
         {

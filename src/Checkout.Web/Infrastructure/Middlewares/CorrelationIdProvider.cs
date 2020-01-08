@@ -4,7 +4,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace Checkout.Web.Infrastructure.Middlewares
 {
-    public class CorrelationIdProvider : ICorrelationIdProvider
+    public sealed class CorrelationIdProvider : ICorrelationIdProvider
     {
         private const string DefaultHeader = "Correlation-ID";
         private readonly IHttpContextAccessor _httpContextAccessor;

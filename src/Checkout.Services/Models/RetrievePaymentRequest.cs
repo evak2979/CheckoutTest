@@ -1,5 +1,6 @@
 ﻿using System;
-using Checkout.Repository.Models.Base;
+using Checkout.Services.Models.Base;
+
 
 namespace Checkout.Services.Models
 {
