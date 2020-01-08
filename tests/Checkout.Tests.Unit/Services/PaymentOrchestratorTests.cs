@@ -77,6 +77,8 @@ namespace Checkout.Tests.Unit.Services
         public void GivenAProcessPaymentRequest_WhenProcessingAProcessPayment_ShouldPersistThePaymentInformationToOurDatastore()
         {
             // given
+            var returnedCVV = "*";
+            var returnedCardNumber = "**";
             var paymentRequest = _fixture.Create<BankPaymentRequest>();
             var paymentResponse = new BankPaymentResponse
             {
@@ -84,6 +86,8 @@ namespace Checkout.Tests.Unit.Services
             };
             _mockBank.Setup(x => x.ProcessPayment(It.IsAny<BankPaymentRequest>()))
                 .Returns(paymentResponse);
+            _mockObfuscator.Setup(x => x.ObfuscateCvv(paymentRequest.CardDetails.CVV.ToString())).Returns(returnedCVV);
+            _mockObfuscator.Setup(x => x.ObfuscateLongCardNumber(paymentRequest.CardDetails.CardNumber.ToString())).Returns(returnedCardNumber);
 
             // when
             _sut.ProcessPayment(paymentRequest);
@@ -92,8 +96,8 @@ namespace Checkout.Tests.Unit.Services
             _mockPaymentRepository.Verify(x => x.CreatePayment(It.Is<PaymentInformation>(y => 
                 y.Id == paymentResponse.PaymentId && 
                 y.Amount == paymentRequest.Amount && 
-                y.CardDetails.CVV == paymentRequest.CardDetails.CVV.ToString() && 
-                y.CardDetails.CardNumber == paymentRequest.CardDetails.CardNumber.ToString() && 
+                y.CardDetails.CVV == returnedCVV && 
+                y.CardDetails.CardNumber == returnedCardNumber && 
                 y.CardDetails.ExpiryDate == paymentRequest.CardDetails.ExpiryDate && 
                 y.CardDetails.Currency == paymentRequest.CardDetails.Currency)));
         }
