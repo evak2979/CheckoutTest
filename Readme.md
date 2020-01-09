@@ -40,7 +40,7 @@ At this moment in time no Authentication/Authorization is setup. In order to ret
 **Submit a Payment**
 A POST Request at:
 
-http://localhost:8800/
+http://localhost:8800/paymentgateway
 
 Example Request:
 
