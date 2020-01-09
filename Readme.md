@@ -97,3 +97,6 @@ The .NET Core logger is being used. An ErrorHandling Middleware has been added t
 - **Build script / CI**: Can deploy and run tests on each environment by using a powershell script and arranging build steps and artifact dependencies on T.C.
 - **Encryption **: To begin with, the SSL version of the API should be used. Furthermore we should look into encrypting whatever information we decide to store about the merchant and the payment. We should also take GDPR into account and make sure we do not persist more than needed.
 - **Data storage**: LiteDB has been used; this can be changed to any provider we so desire, as the Repository project is isolated, and DW functionality is exposed via an interface.
+
+# Testing
+docker-compose up includes running unit and integration tests. Acceptance tests, however, are not included. Acceptance tests launch the app itself in their own containers with ports 9900, 9901. This can either be achieved by testing via VS, or simply running dotnet test checkout.tests.acceptance.dll in the appropriate directory (TODO - move them to the main docker-compose file)
